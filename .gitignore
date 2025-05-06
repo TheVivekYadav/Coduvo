@@ -1,0 +1,70 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# Logs
+logs/
+*.log
+*.log.*
+log.txt
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.*.local
+
+# Editor folders
+.vscode/
+.idea/
+
+# Build output
+dist/
+build/
+coverage/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
+
+# Prisma
+prisma/migrations/
+prisma/dev.db
+prisma/dev.db-journal
+
+# Docker
+docker-compose.override.yml
+*.local.yml
+
+# PM2
+.pids
+dump.rdb
+
+# dotenv-linter cache
+.env.lintcache
+
+# Frontend (if using frameworks like React/Vite/Next)
+**/build/
+**/.next/
+**/.nuxt/
+**/out/
+**/dist/
+
+# Optional - OS-specific cache
+*.swp
+*.swo
+
