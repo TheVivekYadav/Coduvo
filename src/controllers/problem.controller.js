@@ -1,3 +1,4 @@
+import logger from "../../utils/logger.js";
 import { db } from "../libs/db.js";
 import { getJudge0LanguageId, poolBatchResults, submitBatch } from "../libs/judge0.lib.js";
 
@@ -7,13 +8,13 @@ export const createProblem = async (req, res)=>{
 
   // going to check user role once again 
   if (req.user.role !== 'ADMIN'){
-    return res.status(403).json({error: "You are not allowed to create a problem"});
+    logger.warn("You are not allowed to create problem");
+    return res.status(403).json({error: "You are not allowed to create problem"});
   } 
 
   // loop through each refrence solution for different languages.
   try{
     for(const [language, solutionCode] of Object.entries(referenceSolution)){
-      console.log("Language...............")
       const languageId = getJudge0LanguageId(language);
 
       if (!languageId) return res.status(400).json({error:`Language is ${language} not supported`})
@@ -24,16 +25,14 @@ export const createProblem = async (req, res)=>{
         stdin:input,
         expected_output:output,
       }));
-      console.log(submissions);
+      logger.info(`Submissions ${JSON.stringify(submissions)}`)
 
       const submissionResults = await submitBatch(submissions);
 
       const tokens = submissionResults.map((res)=>res.token)
 
-      console.log("Pool Batch --->")
 
       const results = await poolBatchResults(tokens);
-    console.log("Pool batching done")
       for (let i = 0; i < results.length; i++){
         const result = results[i];
         if (result.status.id !== 3){
@@ -41,13 +40,11 @@ export const createProblem = async (req, res)=>{
         }
 
       }
-      console.log(`creating new problem------------------------------>`)
       const newProblem = await db.problem.create({
         data:{
           title,description,difficulty, tags, examples, constraints, testcases, codeSnippets, referenceSolution, userId:req.user.id
         }
       });
-      console.log("crated------------------->")
 
       return res.status(201).json(newProblem);
 

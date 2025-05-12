@@ -1,4 +1,5 @@
 import axios from "axios";
+import logger from "../../utils/logger.js";
 
 export const getJudge0LanguageId = (language)=>{
   const languageMap = {
@@ -14,7 +15,7 @@ export const submitBatch = async (submissions)=>{
   const {data} = await axios.post(`${process.env.JUDGE0_API_URL}submissions/batch?base64_encoded=false`, {submissions})
 
   console.log("Submissions Result:", data)
-
+  logger.info(`Submissions Result: ${JSON.stringify(data)}`);
   return data;
 }
 
